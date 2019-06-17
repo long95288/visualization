@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>可视化实验1</title>
+	</head>
+	<script type="text/javascript" src="js/d3.min.js" ></script>
+	<style>
+		.chart div {
+			font: 10px sans-serif;
+			background-color: green;
+			text-align: right;
+			padding: 3px;
+			margin: 5px;
+			color: white;
+		}
+		circle {
+			fill: cornflowerblue; /*填充颜色*/
+		}
+	</style>
+	<body>
+	<h3>柱状图</h3>
+		<div class="chart"></div>
+	<h3>圆球</h3>
+		<div class="circle">
+			<svg width="720" height="120">
+			  <!--<circle cx="40" cy="60" r="30"></circle>
+			  <circle cx="100" cy="60" r="10"></circle>
+			  <circle cx="120" cy="60" r="10"></circle>-->
+			</svg>
+		</div>
+	<script>
+	// 柱状图
+	var data = [19, 29, 100, 200, 100];
+	d3.select(".chart")
+		.selectAll("div")
+		.data(data)
+		.enter()
+		.append("div")
+		.style("width", function(d) {
+			return d + "px";
+		})
+		.style("background-color",function(d){
+			return '#'+d.toString(8);
+		})
+		.text(function(d) {
+			return d
+		});
+	// 圆球
+	var data = [10, 20, 30, 40, 50];
+	var svg = d3.select("svg");
+	// 需要绑定数据才可以吗？
+	// 绑定数据是为了动态的渲染
+	var circle = svg.selectAll("circle").data(data);
+	var appendCircle = circle.enter();
+
+	// 根据数据来渲染
+	appendCircle.append("circle") // 加入一个circle标签
+		.attr("cy", 60) // 坐标的y值
+		.attr("cx", function(d, i) {
+			console.log("数据" + d);
+			console.log("索引" + i);
+			return i * 100 + d * 2; // 返回x值的坐标
+		})
+		.attr("r", function(d) {
+			return d;
+		}) // 圆球的大小
+		.style("fill", function(d) { // 改变球的填充颜色
+			switch(d) {
+				case 10:
+					return 'red';
+				case 20:
+					return 'blue';
+				case 30:
+					return 'black';
+				case 40:
+					return 'green';
+			}
+		})</script>
+	</body>
+
+</html>
